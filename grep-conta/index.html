@@ -18,12 +18,18 @@
                     <textarea class="form-control" id="codigos" rows="5"></textarea>
                 </div>
                 <div class="d-flex p-2 bd-highlight justify-content-evenly">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="informar-arquivo"  onchange="informarArquivoClick()">
-                        <label class="form-check-label" for="informar-arquivo">
-                          Informar arquivo
-                        </label>
-                      </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="arquivo-origem"  onchange="informarArquivoClick()">
+                    <label class="form-check-label" for="arquivo-origem">
+                      Arquivo de origem
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="arquivo-destino"  onchange="informarArquivoClick()">
+                    <label class="form-check-label" for="arquivo-destino">
+                      Arquivo de destino
+                    </label>
+                  </div>
                       <div class="form-check">
                         <input class="form-check-input" type="checkbox" value="" id="contar-linhas">
                         <label class="form-check-label" for="contar-linhas">
@@ -32,12 +38,19 @@
                       </div>  
                 </div>
                 <!-- input nome Arquivo-->
-                <div class="d-flex p-2 input-group input-file" id="input-file">
+                <div class="d-flex p-2 input-group hide-file-field" id="input-file">
                     
-                        <span class="input-group-text">Nome do arquivo</span>
-                        <input id='file-name' type="text" aria-label="Nome do arquivo" class="form-control">
+                        <span class="input-group-text">Arquivo origem</span>
+                        <input id='file-name' type="text" aria-label="Arquivo origem" class="form-control">
                 
                 </div>
+                <!-- input nome Arquivo-->
+                <div class="d-flex p-2 input-group hide-file-field" id="output-file">
+                    
+                  <span class="input-group-text">Arquivo destino</span>
+                  <input id='file-name' type="text" aria-label="Arquivo destino" class="form-control">
+          
+               </div>
                 <!-- botoes -->
                 <div class="d-flex p-2 bd-highlight justify-content-center">
                         <button type="button" class="btn btn-primary btn-lg me-5" onclick="gerarComando()">Gerar</button>

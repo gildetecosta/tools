@@ -32,6 +32,6 @@
     margin-bottom: 1rem;
     background-color: #f8f9fa;
 }
-.input-file {
+.hide-file-field {
     display: none !important;
 }

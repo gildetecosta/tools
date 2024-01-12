@@ -11,9 +11,9 @@ const copyToClipboard = async () => {
 function limparInput() {
     try {
         document.getElementById("codigos").value = "";
-        // document.getElementById("contar-linhas").checked = false;
-        // document.getElementById("contar-linhas").disabled = true;
-        document.getElementById("informar-arquivo").checked = false;
+        document.getElementById("arquivo-origem").checked = false;
+        document.getElementById("arquivo-destino").checked = false;
+        document.getElementById("contar-linhas").checked = false;
         informarArquivoClick();
     } catch (error) {
         console.error("Erro ao limpar o TextArea:", error);
@@ -22,35 +22,57 @@ function limparInput() {
 };
 function gerarComando() {
     const codigos = document.getElementById("codigos");
-    const contarLinhas = document.getElementById("contar-linhas");
-    const informarArquivo = document.getElementById("informar-arquivo");
+    const resultadoComando = document.getElementById("copiar");
+    const checkBoxContarLinhas = document.getElementById("contar-linhas");
+    const checkBoxOutput = document.getElementById("arquivo-destino");
+    const checkBoxInput = document.getElementById("arquivo-origem");
      
-    var linhas = codigos.value.split(/[\n\s]/).filter( l => l.trim()).map( l => '^'+l+'|ContaPai:'+l);
-    comando = "grep -E '";
+    const inputFileInput = document.getElementById('input-file').querySelector("#file-name");
+    const inputFileOuput = document.getElementById('output-file').querySelector("#file-name");
+
+    const linhas = codigos.value.split(/[\n\s]/).filter( l => l.trim()).map( l => '^'+l+'|ContaPai:'+l);
+
+    let comando = "grep -E '";
+
     for(i=0;i < linhas.length; i++){
         comando += linhas[i] + ( i < linhas.length - 1 ? "|" : "");
     }
     
-    comando += "'";
+    comando += "' ";
     
-    nomeArquivo = (informarArquivo.checked ? document.getElementById('file-name').value : "") 
+    let nomeArquivo = (checkBoxInput.checked ? inputFileInput.value.trim() : "") 
     if (nomeArquivo.length > 0) {
-        comando += ' > ' + nomeArquivo + (contarLinhas.checked ? ' | wc -l' : '')
+        comando += nomeArquivo
+    }
+
+    nomeArquivo = (checkBoxOutput.checked ? inputFileOuput.value.trim() : "") 
+    if (nomeArquivo.length > 0) {
+        comando += ' | tee ' + nomeArquivo + (checkBoxContarLinhas.checked ? ' | wc -l' : '')
     }
     
-    document.getElementById("copiar").textContent=comando
+    resultadoComando.textContent=comando
 };
 function informarArquivoClick() {
-    var contarLinhas = document.getElementById("contar-linhas");
-    var inputFile = document.getElementById("input-file");
-    const informarArquivo = document.getElementById("informar-arquivo");
-    if (informarArquivo.checked == true) {
-        contarLinhas.disabled = false;
-        inputFile.classList.remove("input-file");
+    const checkBoxContarLinhas = document.getElementById("contar-linhas");
+    const divOutput = document.getElementById("output-file");
+    const divInput = document.getElementById("input-file");
+    const checkBoxOutput = document.getElementById("arquivo-destino");
+    const checkBoxInput = document.getElementById("arquivo-origem");
+    if (checkBoxOutput.checked == true) {
+        checkBoxContarLinhas.disabled = false;
+        divOutput.classList.remove("hide-file-field");
         
     } else {
-        contarLinhas.disabled = true;
-        inputFile.classList.add("input-file");
-        inputFile.querySelector("#file-name").value = '';
+        checkBoxContarLinhas.disabled = true;
+        divOutput.classList.add("hide-file-field");
+        divOutput.querySelector("#file-name").value = '';
+    }
+
+    if (checkBoxInput.checked == true) {
+        divInput.classList.remove("hide-file-field");
+        
+    } else {
+        divInput.classList.add("hide-file-field");
+        divInput.querySelector("#file-name").value = '';
     }
 };
